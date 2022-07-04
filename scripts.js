@@ -143,8 +143,9 @@ const equal = document.querySelector('.equal');
 equal.addEventListener('click', () => {
   displayValue = display.textContent;
   for (let i in operator){
-    displayValue = displayValue.replace(operator[i], replaceOperator(operator[i]));
+    displayValue = displayValue.replaceAll(operator[i], replaceOperator(operator[i]));
   }
+  
   let displayArr = displayValue.split(' ');
   displayArr.forEach((elem) => {
     if (operator.includes(elem) == true){
