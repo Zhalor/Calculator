@@ -1,17 +1,29 @@
+operator = ['+', '-', '*', '/'];
+
+let displayValue = '';
+
 add = function(num1, num2) {
-  console.log(num1 + num2);
+  let result = Number(num1) + Number(num2);
+  console.log(result);
+  display.textContent = result;
 }
 
 subtract = function(num1, num2) {
-  console.log(num1 - num2);
+  let result = Number(num1) - Number(num2);
+  console.log(result);
+  display.textContent = result;
 }
 
 multiply = function(num1, num2) {
-  console.log(num1 * num2);
+  let result = Number(num1) * Number(num2);
+  console.log(result);
+  display.textContent = result;
 }
 
 divide = function(num1, num2) {
-  console.log(num1 / num2);
+  let result = Number(num1) / Number(num2);
+  console.log(result);
+  display.textContent = result;
 }
 
 operate = function(num1, num2, op) {
@@ -29,10 +41,18 @@ operate = function(num1, num2, op) {
 
 const display = document.querySelector('#display');
 
+const clear = document.querySelector('.clear');
+clear.addEventListener('click', () => {
+  display.textContent = '' ;
+  displayValue = display.textContent;
+});
+
 const zero = document.querySelector('.zero');
 zero.addEventListener('click', () => {
-  display.textContent += '0';
-  displayValue = display.textContent;
+  if (display.textContent.length < 7){
+    display.textContent += '0';
+    displayValue = display.textContent;
+  }
 });
 
 const one = document.querySelector('.one');
@@ -94,3 +114,55 @@ dot.addEventListener('click', () => {
   display.textContent += '.';
   displayValue = display.textContent;
 });
+
+const addBtn = document.querySelector('.add');
+addBtn.addEventListener('click', () => {
+  display.textContent += '+';
+  displayValue = display.textContent;
+});
+
+const subtractBtn = document.querySelector('.subtract');
+subtractBtn.addEventListener('click', () => {
+  display.textContent += '-';
+  displayValue = display.textContent;
+});
+
+const divideBtn = document.querySelector('.multiply');
+divideBtn.addEventListener('click', () => {
+  display.textContent += '*';
+  displayValue = display.textContent;
+});
+
+const multiplyBtn = document.querySelector('.divide');
+multiplyBtn.addEventListener('click', () => {
+  display.textContent += '/' ;
+  displayValue = display.textContent;
+});
+
+const equal = document.querySelector('.equal');
+equal.addEventListener('click', () => {
+  displayValue = display.textContent;
+  for (let i in operator){
+    displayValue = displayValue.replace(operator[i], replaceOperator(operator[i]));
+  }
+  let displayArr = displayValue.split(' ');
+  displayArr.forEach((elem) => {
+    if (operator.includes(elem) == true){
+      let operatorIndex = displayArr.indexOf(elem);
+      operate(displayArr[operatorIndex-1], displayArr[operatorIndex+1], elem);
+    }
+  });
+});
+
+replaceOperator = function(op) {
+  switch(op){
+    case '+': return ' + ';
+      break;
+    case '-': return ' - ';
+      break;
+    case '*': return ' * ';
+      break;
+    case '/': return ' / ';
+      break;
+  }
+}
