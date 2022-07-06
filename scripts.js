@@ -4,42 +4,57 @@ let displayValue = '';
 
 add = function(num1, num2) {
   let result = Number(num1) + Number(num2);
-  console.log(result);
-  display.textContent = result;
+  if (result > 0) {
+    return Math.round(result * 100) / 100;
+  } else {
+    return Math.floor(Math.abs(result) * 100) * -1 / 100 
+  }
 }
 
 subtract = function(num1, num2) {
   let result = Number(num1) - Number(num2);
-  console.log(result);
-  display.textContent = result;
+  if (result > 0) {
+    return Math.round(result * 100) / 100;
+  } else {
+    return Math.floor(Math.abs(result) * 100) * -1 / 100 
+  }
 }
 
 multiply = function(num1, num2) {
   let result = Number(num1) * Number(num2);
-  console.log(result);
-  display.textContent = result;
+  if (result > 0) {
+    return Math.round(result * 100) / 100;
+  } else {
+    return Math.floor(Math.abs(result) * 100) * -1 / 100 
+  }
 }
 
 divide = function(num1, num2) {
   let result = Number(num1) / Number(num2);
-  console.log(result);
-  display.textContent = result;
+  if (result > 0) {
+    return Math.round(result * 100) / 100;
+  } else {
+    return Math.floor(Math.abs(result) * 100) * -1 / 100 
+  }
 }
 
 operate = function(num1, num2, op) {
   switch(op){
-    case '+': add(num1, num2);
-      break;
-    case '-': subtract(num1, num2);
-      break;
-    case '*': multiply(num1, num2);
-      break;
-    case '/': divide(num1, num2);
-      break;
+    case '+': return add(num1, num2);
+    case '-': return subtract(num1, num2);
+    case '*': return multiply(num1, num2);
+    case '/': return divide(num1, num2);
   }
 }
 
 const display = document.querySelector('#display');
+
+document.body.addEventListener('keypress', (event) => {
+  if (!Number.isNaN(Number(event.key)) || operator.includes(event.key)){
+    display.textContent += event.key;
+    displayValue = display.textContent;
+  }
+})
 
 const clear = document.querySelector('.clear');
 clear.addEventListener('click', () => {
@@ -111,8 +126,10 @@ nine.addEventListener('click', () => {
 
 const dot = document.querySelector('.dot');
 dot.addEventListener('click', () => {
-  display.textContent += '.';
-  displayValue = display.textContent;
+  if (!display.textContent.includes('.')){
+    display.textContent += '.';
+    displayValue = display.textContent;
+  }
 });
 
 const addBtn = document.querySelector('.add');
@@ -145,14 +162,20 @@ equal.addEventListener('click', () => {
   for (let i in operator){
     displayValue = displayValue.replaceAll(operator[i], replaceOperator(operator[i]));
   }
-  
   let displayArr = displayValue.split(' ');
-  displayArr.forEach((elem) => {
-    if (operator.includes(elem) == true){
-      let operatorIndex = displayArr.indexOf(elem);
-      operate(displayArr[operatorIndex-1], displayArr[operatorIndex+1], elem);
+  while ((displayArr.length) > 1){
+    if (operator.includes(displayArr[1]) && !displayArr.includes('')){
+      num = operate(displayArr[0], displayArr[2], displayArr[1]);
+      displayArr.splice(0, 3, num);
     }
-  });
+  }
+  if (displayArr[0] === Infinity){
+    display.textContent = 'Uh, no.';
+  displayValue = '';
+  } else {
+    display.textContent = displayArr[0];
+    displayValue = display.textContent;
+  }
 });
 
 replaceOperator = function(op) {
