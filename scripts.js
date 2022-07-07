@@ -1,6 +1,6 @@
 operator = ['+', '-', '*', '/'];
 
-let displayValue = '';
+let displayArr = [];
 
 add = function(num1, num2) {
   let result = Number(num1) + Number(num2);
@@ -47,146 +47,165 @@ operate = function(num1, num2, op) {
   }
 }
 
+addBtnPress = function() {
+  if (!display.textContent == ''){
+    displayArr.push(display.textContent, '+');
+    display.textContent = '' ;
+  }
+}
+
+subtractBtnPress = function() {
+  if (!display.textContent == ''){
+    displayArr.push(display.textContent, '-');
+    display.textContent = '' ;
+  }
+}
+
+multiplyBtnPress = function() {
+  if (!display.textContent == ''){
+    displayArr.push(display.textContent, '*');
+    display.textContent = '' ;
+  }
+}
+
+divideBtnPress = function() {
+  if (!display.textContent == ''){
+    displayArr.push(display.textContent, '/');
+    display.textContent = '' ;
+  }
+}
+
+let calcResult = function() {
+  if (display.textContent != '' && displayArr.length > 0){
+    displayArr.push(display.textContent);
+  }
+  while ((displayArr.length) > 1){
+    if (operator.includes(displayArr[1]) && !displayArr.includes('') && displayArr.length % 2 === 1){
+      num = operate(displayArr[0], displayArr[2], displayArr[1]);
+      displayArr.splice(0, 3, num);
+    } else {
+      return;
+    }
+  }
+  if (displayArr[0] === Infinity){
+    display.textContent = 'Uh, no.';
+  } else {
+    display.textContent = displayArr[0];
+    displayArr.splice(0, displayArr.length);
+  }
+}
+
 const display = document.querySelector('#display');
 
 document.body.addEventListener('keypress', (event) => {
-  if (!Number.isNaN(Number(event.key)) || operator.includes(event.key)){
+  if (!Number.isNaN(Number(event.key)) && display.textContent.length < 10){
     display.textContent += event.key;
-    displayValue = display.textContent;
+  } else if (operator.includes(event.key)) {
+    switch (event.key){
+      case '+': addBtnPress();
+      case '-': subtractBtnPress();
+      case '*': multiplyBtnPress();
+      case '/': divideBtnPress();
+    } 
+  } else if (event.key === 'Enter') {
+    calcResult();
   }
 })
 
 const clear = document.querySelector('.clear');
 clear.addEventListener('click', () => {
   display.textContent = '' ;
-  displayValue = display.textContent;
+  displayArr.splice(0, displayArr.length);
 });
 
 const zero = document.querySelector('.zero');
 zero.addEventListener('click', () => {
-  if (display.textContent.length < 7){
+  if (display.textContent.length < 10){
     display.textContent += '0';
-    displayValue = display.textContent;
   }
 });
 
 const one = document.querySelector('.one');
 one.addEventListener('click', () => {
-  display.textContent += '1';
-  displayValue = display.textContent;
+  if (display.textContent.length < 10){
+    display.textContent += '1';
+  }
 });
 
 const two = document.querySelector('.two');
 two.addEventListener('click', () => {
-  display.textContent += '2';
-  displayValue = display.textContent;
+  if (display.textContent.length < 10){
+    display.textContent += '2';
+  }
 });
 
 const three = document.querySelector('.three');
 three.addEventListener('click', () => {
-  display.textContent += '3';
-  displayValue = display.textContent;
+  if (display.textContent.length < 10){
+    display.textContent += '3';
+  }
 });
 
 const four = document.querySelector('.four');
 four.addEventListener('click', () => {
-  display.textContent += '4';
-  displayValue = display.textContent;
+  if (display.textContent.length < 10){
+    display.textContent += '4';
+  }
 });
 
 const five = document.querySelector('.five');
 five.addEventListener('click', () => {
-  display.textContent += '5';
-  displayValue = display.textContent;
+  if (display.textContent.length < 10){
+    display.textContent += '5';
+  }
 });
 
 const six = document.querySelector('.six');
 six.addEventListener('click', () => {
-  display.textContent += '6';
-  displayValue = display.textContent;
+  if (display.textContent.length < 10){
+    display.textContent += '6';
+  }
 });
 
 const seven = document.querySelector('.seven');
 seven.addEventListener('click', () => {
-  display.textContent += '7';
-  displayValue = display.textContent;
+  if (display.textContent.length < 10){
+    display.textContent += '7';
+  }
 });
 
 const eight = document.querySelector('.eight');
 eight.addEventListener('click', () => {
-  display.textContent += '8';
-  displayValue = display.textContent;
+  if (display.textContent.length < 10){
+    display.textContent += '8';
+  }
 });
 
 const nine = document.querySelector('.nine');
 nine.addEventListener('click', () => {
-  display.textContent += '9';
-  displayValue = display.textContent;
+  if (display.textContent.length < 10){
+    display.textContent += '9';
+  }
 });
 
 const dot = document.querySelector('.dot');
 dot.addEventListener('click', () => {
-  if (!display.textContent.includes('.')){
+  if (!display.textContent.includes('.') && display.textContent.length < 10 ){
     display.textContent += '.';
-    displayValue = display.textContent;
   }
 });
 
 const addBtn = document.querySelector('.add');
-addBtn.addEventListener('click', () => {
-  display.textContent += '+';
-  displayValue = display.textContent;
-});
+addBtn.addEventListener('click', addBtnPress);
 
 const subtractBtn = document.querySelector('.subtract');
-subtractBtn.addEventListener('click', () => {
-  display.textContent += '-';
-  displayValue = display.textContent;
-});
+subtractBtn.addEventListener('click', subtractBtnPress);
 
 const divideBtn = document.querySelector('.multiply');
-divideBtn.addEventListener('click', () => {
-  display.textContent += '*';
-  displayValue = display.textContent;
-});
+divideBtn.addEventListener('click', multiplyBtnPress);
 
 const multiplyBtn = document.querySelector('.divide');
-multiplyBtn.addEventListener('click', () => {
-  display.textContent += '/' ;
-  displayValue = display.textContent;
-});
+multiplyBtn.addEventListener('click', divideBtnPress);
 
 const equal = document.querySelector('.equal');
-equal.addEventListener('click', () => {
-  displayValue = display.textContent;
-  for (let i in operator){
-    displayValue = displayValue.replaceAll(operator[i], replaceOperator(operator[i]));
-  }
-  let displayArr = displayValue.split(' ');
-  while ((displayArr.length) > 1){
-    if (operator.includes(displayArr[1]) && !displayArr.includes('')){
-      num = operate(displayArr[0], displayArr[2], displayArr[1]);
-      displayArr.splice(0, 3, num);
-    }
-  }
-  if (displayArr[0] === Infinity){
-    display.textContent = 'Uh, no.';
-  displayValue = '';
-  } else {
-    display.textContent = displayArr[0];
-    displayValue = display.textContent;
-  }
-});
-
-replaceOperator = function(op) {
-  switch(op){
-    case '+': return ' + ';
-      break;
-    case '-': return ' - ';
-      break;
-    case '*': return ' * ';
-      break;
-    case '/': return ' / ';
-      break;
-  }
-}
+equal.addEventListener('click', calcResult);
