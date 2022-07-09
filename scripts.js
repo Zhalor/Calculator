@@ -97,7 +97,7 @@ let calcResult = function() {
 
 const display = document.querySelector('#display');
 
-document.body.addEventListener('keypress', (event) => {
+document.body.addEventListener('keydown', (event) => {
   if (!Number.isNaN(Number(event.key)) && display.textContent.length < 10){
     display.textContent += event.key;
   } else if (operator.includes(event.key)) {
@@ -109,6 +109,11 @@ document.body.addEventListener('keypress', (event) => {
     } 
   } else if (event.key === 'Enter') {
     calcResult();
+  } else if (event.key === '.' && display.textContent.length < 10 && !display.textContent.includes('.')){
+    display.textContent += event.key;
+  } else if (event.key === 'Backspace'){
+    let lengthOfDisplay = display.textContent.length;
+    display.textContent = display.textContent.substring(0, lengthOfDisplay - 1);
   }
 })
 
