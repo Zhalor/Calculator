@@ -1,1 +1,1 @@
-# Calculator
+This project is a simple web based calculator. The goal of the project is to practice and test my knowledge of Javascript as well as my CSS and design skills.
